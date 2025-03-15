@@ -1,5 +1,4 @@
 import os
-import json
 import itertools
 import sqlite3
 from fastapi import FastAPI
@@ -42,6 +41,11 @@ class MatchResult(BaseModel):
     winning_team: Dict[str, str]
     losing_team: Dict[str, str]
 
+# ✅ 기본 루트 엔드포인트
+@app.get("/")
+def read_root():
+    return {"message": "Welcome to the Umum Matching API!"}
+
 # ✅ 모든 플레이어 목록 반환 API
 @app.get("/players/")
 def get_players():
@@ -62,6 +66,36 @@ def add_player(player: Player):
     conn.commit()
     conn.close()
     return {"message": "플레이어 추가 완료"}
+
+# ✅ 팀 매칭 API (최대 10개 조합 제공)
+@app.post("/matchmaking/")
+def find_top_balanced_lane_teams(request: TeamRequest):
+    conn = sqlite3.connect(DB_FILE)
+    cursor = conn.cursor()
+    
+    cursor.execute("SELECT * FROM players WHERE name IN ({seq})".format(
+        seq=','.join(['?'] * len(request.selected_names))
+    ), request.selected_names)
+    
+    selected_players = [{"name": row[0], "ratings": {"top": row[1], "jungle": row[2], "mid": row[3], "adc": row[4], "support": row[5]}} for row in cursor.fetchall()]
+    
+    conn.close()
+    
+    if len(selected_players) != 10:
+        return {"error": "선택된 플레이어 수는 10명이 되어야 합니다."}
+
+    lanes = ["top", "jungle", "mid", "adc", "support"]
+    valid_assignments = []
+    lane_weights = {'top': 20, 'jungle': 23, 'mid': 24, 'adc': 18, 'support': 15}
+
+    for team1 in itertools.combinations(selected_players, 5):
+        team2 = [p for p in selected_players if p not in team1]
+        valid_assignments.append({
+            "team1": {lane: team1[i]["name"] for i, lane in enumerate(lanes)},
+            "team2": {lane: team2[i]["name"] for i, lane in enumerate(lanes)},
+        })
+
+    return valid_assignments[:10]  # 최대 10개 반환
 
 # ✅ 경기 결과 반영 API
 @app.post("/update_scores/")
