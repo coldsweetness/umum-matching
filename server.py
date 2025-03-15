@@ -3,6 +3,7 @@ from pydantic import BaseModel
 from typing import List, Dict
 import itertools
 import json
+import os
 
 app = FastAPI()
 
@@ -93,3 +94,9 @@ def update_scores(result: MatchResult):
                 p["ratings"][lane] = max(0, p["ratings"][lane] - 1)
     save_data()
     return {"message": "점수 업데이트 완료"}
+
+
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 8000))  # Render가 제공하는 PORT 사용
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=port)
