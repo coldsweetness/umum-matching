@@ -9,10 +9,10 @@ import os
 
 app = FastAPI()
 
-# ✅ CORS 설정 추가 (외부 API 호출 허용)
+# ✅ CORS 설정 (Streamlit과 연동을 위해 필요)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # 모든 도메인 허용 (보안이 필요하면 특정 도메인만 허용)
+    allow_origins=["*"],  # 모든 도메인 허용 (보안 필요시 특정 도메인만 허용 가능)
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -77,7 +77,29 @@ def add_player(player: Player):
     conn.close()
     return {"message": "플레이어 추가 완료"}
 
-# ✅ 팀 매칭
+# ✅ 플레이어 삭제
+@app.delete("/delete_player/{player_name}")
+def delete_player(player_name: str):
+    conn = sqlite3.connect(DB_FILE)
+    cursor = conn.cursor()
+    
+    # ✅ 플레이어 존재 여부 확인
+    cursor.execute("SELECT * FROM players WHERE name = ?", (player_name,))
+    player = cursor.fetchone()
+    
+    if not player:
+        conn.close()
+        return {"error": f"플레이어 '{player_name}'을 찾을 수 없습니다."}, 404
+    
+    # ✅ 플레이어 삭제 수행
+    cursor.execute("DELETE FROM players WHERE name = ?", (player_name,))
+    conn.commit()
+    conn.close()
+    
+    return {"message": f"플레이어 '{player_name}' 삭제 완료"}
+
+
+# ✅ 팀 매칭 (최적 10개 조합 반환)
 @app.post("/matchmaking/")
 def find_top_balanced_lane_teams(request: TeamRequest):
     conn = sqlite3.connect(DB_FILE)
