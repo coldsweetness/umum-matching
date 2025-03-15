@@ -4,24 +4,25 @@ import sqlite3
 from fastapi import FastAPI
 from pydantic import BaseModel
 from typing import List, Dict
+import uvicorn
 
 app = FastAPI()
 
 # ✅ SQLite 데이터베이스 설정
 DB_FILE = "database.db"
 
-# ✅ DB 초기화 함수
+# ✅ DB 초기화 함수 (Render 환경에서도 지속 유지 가능하도록 수정)
 def init_db():
     conn = sqlite3.connect(DB_FILE)
     cursor = conn.cursor()
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS players (
             name TEXT PRIMARY KEY,
-            top INTEGER,
-            jungle INTEGER,
-            mid INTEGER,
-            adc INTEGER,
-            support INTEGER
+            top INTEGER DEFAULT 50,
+            jungle INTEGER DEFAULT 50,
+            mid INTEGER DEFAULT 50,
+            adc INTEGER DEFAULT 50,
+            support INTEGER DEFAULT 50
         )
     """)
     conn.commit()
@@ -123,8 +124,7 @@ def delete_player(player_name: str):
     conn.close()
     return {"message": f"플레이어 '{player_name}' 삭제 완료"}
 
-# ✅ Render 환경변수에 맞춰 실행 (PORT 설정)
+# ✅ FastAPI 실행 코드 (Render 종료 방지)
 if __name__ == "__main__":
-    import uvicorn
     PORT = int(os.getenv("PORT", 8000))
-    uvicorn.run(app, host="0.0.0.0", port=PORT)
+    uvicorn.run(app, host="0.0.0.0", port=PORT, lifespan="on")
