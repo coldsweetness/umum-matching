@@ -1,0 +1,132 @@
+[
+  {
+    "name": "장동우",
+    "ratings": {
+      "top": 73,
+      "jungle": 72,
+      "mid": 74,
+      "adc": 78,
+      "support": 77
+    }
+  },
+  {
+    "name": "신원준",
+    "ratings": {
+      "top": 74,
+      "jungle": 0,
+      "mid": 78,
+      "adc": 0,
+      "support": 76
+    }
+  },
+  {
+    "name": "최민영",
+    "ratings": {
+      "top": 67,
+      "jungle": 65,
+      "mid": 64,
+      "adc": 64,
+      "support": 66
+    }
+  },
+  {
+    "name": "고민석",
+    "ratings": {
+      "top": 63,
+      "jungle": 65,
+      "mid": 64,
+      "adc": 68,
+      "support": 63
+    }
+  },
+  {
+    "name": "옥영균",
+    "ratings": {
+      "top": 70,
+      "jungle": 66,
+      "mid": 0,
+      "adc": 0,
+      "support": 69
+    }
+  },
+  {
+    "name": "정인수",
+    "ratings": {
+      "top": 68,
+      "jungle": 0,
+      "mid": 68,
+      "adc": 68,
+      "support": 69
+    }
+  },
+  {
+    "name": "정세화",
+    "ratings": {
+      "top": 55,
+      "jungle": 0,
+      "mid": 0,
+      "adc": 0,
+      "support": 55
+    }
+  },
+  {
+    "name": "김창회",
+    "ratings": {
+      "top": 76,
+      "jungle": 0,
+      "mid": 69,
+      "adc": 0,
+      "support": 70
+    }
+  },
+  {
+    "name": "김민재",
+    "ratings": {
+      "top": 66,
+      "jungle": 0,
+      "mid": 70,
+      "adc": 64,
+      "support": 66
+    }
+  },
+  {
+    "name": "최예찬",
+    "ratings": {
+      "top": 0,
+      "jungle": 75,
+      "mid": 0,
+      "adc": 0,
+      "support": 73
+    }
+  },
+  {
+    "name": "허건(한양)",
+    "ratings": {
+      "top": 71,
+      "jungle": 68,
+      "mid": 69,
+      "adc": 65,
+      "support": 0
+    }
+  },
+  {
+    "name": "강규림",
+    "ratings": {
+      "top": 70,
+      "jungle": 0,
+      "mid": 70,
+      "adc": 70,
+      "support": 0
+    }
+  },
+  {
+    "name": "이학성",
+    "ratings": {
+      "top": 61,
+      "jungle": 0,
+      "mid": 0,
+      "adc": 0,
+      "support": 56
+    }
+  }
+]
